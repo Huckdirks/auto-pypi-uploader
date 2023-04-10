@@ -1,6 +1,5 @@
 # Imported Libraries
 from dotenv import load_dotenv
-from pyautogui import write, press
 
 # Python Libraries
 from os import getenv, system
@@ -12,13 +11,26 @@ ENV_NAME = "pip_account_info.env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env 
 ENV_PATH = join(dirname(__file__), ENV_NAME)
 
 
+# Set up the environment file
+def setup_env(USERNAME: str, PASSWORD: str) -> None:
+    with open(ENV_PATH, "w") as f:
+        f.write(f"# Pip Account Details\nUSERNAME = \"{USERNAME}\"\nPASSWORD = \"{PASSWORD}\"")
+    return
+
+
 # Export to PyPi given a version
 def pypi_exporter(**kwargs) -> bool:
     if not isfile(ENV_PATH):    # If the environment file is not found, create it & return False
-        print(f"Environment file not found: {ENV_PATH}\nPlease input your pip account information in the newly made .env file")
-        with open(ENV_PATH, "w") as f:
-            f.write("# Pip Account Details\nUSERNAME = \"\"\nPASSWORD = \"\"")
-        return False
+        print(f"Environment file not found: {ENV_PATH}")
+        if len(argv) == 1:  # If in user input mode, ask for username & password
+            USERNAME = input("Please provide a PyPi username: ")
+            PASSWORD = input("Please provide a PyPi password: ")
+            setup_env(USERNAME, PASSWORD)
+        else:
+            print("Please input your pip account information in the newly made .env file")
+            setup_env(None, None)
+            return False
+        
     if not kwargs:  # If the version is not provided, return False
         if len(argv) == 2:
             pass
@@ -31,6 +43,8 @@ def pypi_exporter(**kwargs) -> bool:
         PACKAGE_VERSION = argv[1]
     elif "version" in kwargs:
         PACKAGE_VERSION = kwargs["version"]
+    elif len(argv) == 1:
+        PACKAGE_VERSION = input("Please provide a package version")
     else:
         print("Please provide a package version")
         return False
