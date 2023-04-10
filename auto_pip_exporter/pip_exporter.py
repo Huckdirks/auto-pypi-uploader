@@ -20,9 +20,9 @@ def setup_env(USERNAME: str, PASSWORD: str) -> None:
 
 # Export to PyPi given a version
 def pypi_exporter(**kwargs) -> bool:
-    if not isfile(ENV_PATH) or (len(argv) == 4 and (argv[1].lower() == "-a" or argv[1].lower() == "--add")):    # If the environment file is not found, or username & password aren't passed in, create it & return False
+    if not isfile(ENV_PATH) or (len(argv) == 4 and (argv[1].lower() == "-a" or argv[1].lower() == "--add")):    # If the environment file is not found, or username & password aren't passed in, create the .env & return False
         print(f"Environment file not found: {ENV_PATH}")
-        if len(argv) == 1:  # If in user input mode, ask for username & password
+        if len(argv) == 1 and not kwargs:  # If in user input mode, ask for username & password
             USERNAME = input("Please provide a PyPi username: ")
             PASSWORD = input("Please provide a PyPi password: ")
             setup_env(USERNAME, PASSWORD)
@@ -33,21 +33,13 @@ def pypi_exporter(**kwargs) -> bool:
     elif len(argv) == 4 and (argv[1].lower() == "-u" or argv[1].lower() == "--user"):  # If username & password are passed in, create the environment file
         return setup_env(argv[2], argv[3])
         
-    if not kwargs:  # If the version is not provided, return False
-        if len(argv) == 2:
-            pass
-        else:
-            print("Please provide a package version")
-            return False
-
-    # Get Version for pip package
-    if argv[1]:
-        PACKAGE_VERSION = argv[1]
-    elif "version" in kwargs:
+    if kwargs and "version" in kwargs:  # If a version is passed in, use that version
         PACKAGE_VERSION = kwargs["version"]
-    elif len(argv) == 1:
+    elif len(argv) == 2 and argv[1]:    # If a version is passed in via command line arguments, use that version
+        PACKAGE_VERSION = argv[1]
+    elif len(argv) == 1 and not kwargs: # If no version is passed in & in user input mode, ask for a version
         PACKAGE_VERSION = input("Please provide a package version")
-    else:
+    else:                               # If no version is passed in (somehow), return False
         print("Please provide a package version")
         return False
     
@@ -56,7 +48,7 @@ def pypi_exporter(**kwargs) -> bool:
     with open("setup.py", "r") as f:
         lines = f.readlines()
     
-    # Find the line with "\tversion = " and replace it with the new version
+    # Find the line with "version = " and replace it with the new version
     for i, line in enumerate(lines):
         if "version = " in line:
             lines[i] = f"\tversion = \"{PACKAGE_VERSION}\",\n"
