@@ -20,7 +20,7 @@ def setup_env(USERNAME: str, PASSWORD: str) -> None:
 
 # Export to PyPi given a version
 def pypi_exporter(**kwargs) -> bool:
-    if not isfile(ENV_PATH):    # If the environment file is not found, create it & return False
+    if not isfile(ENV_PATH) or (len(argv) == 4 and (argv[1].lower() == "-a" or argv[1].lower() == "--add")):    # If the environment file is not found, or username & password aren't passed in, create it & return False
         print(f"Environment file not found: {ENV_PATH}")
         if len(argv) == 1:  # If in user input mode, ask for username & password
             USERNAME = input("Please provide a PyPi username: ")
@@ -30,6 +30,8 @@ def pypi_exporter(**kwargs) -> bool:
             print("Please input your pip account information in the newly made .env file")
             setup_env(None, None)
             return False
+    elif len(argv) == 4 and (argv[1].lower() == "-u" or argv[1].lower() == "--user"):  # If username & password are passed in, create the environment file
+        return setup_env(argv[2], argv[3])
         
     if not kwargs:  # If the version is not provided, return False
         if len(argv) == 2:

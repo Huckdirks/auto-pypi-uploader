@@ -1,4 +1,4 @@
-# Text Excuse Generator
+# Auto Pip Exporter
 
 ## Table of Contents
 
@@ -6,15 +6,9 @@
 - [Uses](#uses)
     - [Running from Command Line](#running-from-command-line)
     - [Running with Command Line Arguments](#running-with-command-line-arguments)
-        - [Sending a Text Message](#sending-a-text-message)
-        - [Setting Up .env File](#setting-up-env-file)
-        - [Saving a New Recipient](#saving-a-new-recipient)
     - [Importing as a Module](#importing-as-a-module)
-        - [Installing with pip](#installing-with-pip)
-        - [`generate_excuse()`](#generate_excuse-takes-in)
+        - [`pypi_exporter()`](#pypi_exporter-takes-in)
         - [`setup_env()`](#setup_env-takes-in)
-        - [`add_recipient()`](#add_recipient-takes-in)
-        - [`send_twilio_text()`](#send_twilio_text-takes-in)
 - [Running](#running)
     - [Dependencies](#dependencies)
     - [Setting Up .env File](#setting-up-env-file-1)
@@ -26,13 +20,11 @@
 
 ## Introduction
 
-Recently, I came across a reddit post on [r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/) that had a comment that referenced [this repository](https://github.com/NARKOZ/hacker-scripts#readme). While not only being a pretty funny story and set of scripts, it also got me thinking about creating a script of my own to create excuses and text them to whoever I want/need to. Unlike the scripts that I took inspiration from: [hangover.py](https://github.com/NARKOZ/hacker-scripts/blob/master/python3/hangover.py) & [smack_my_bitch_up.py](https://github.com/NARKOZ/hacker-scripts/blob/master/python3/smack_my_bitch_up.py), that just picked excuses from a predetermined list, I decided to generate the excuses using [OpenAI's GPT-3.5-turbo](https://openai.com/blog/openai-api/) API, and I used [Twilio's API](https://www.twilio.com/docs/sms/quickstart/python) to send text messages. The program prompts the user (or can be passed in as arguments) for: the sender of the text, the recipient of the text, the 'problem', an excuse for the problem, and the option to send the generated message as a text. It also has a system to save phone numbers to names, so you can just type in a name instead of a phone number. Since the program uses OpenAI's [GPT-3.5-turbo](https://platform.openai.com/docs/models/gpt-3-5) model, it can generate a pretty good excuse to anyone for virtually anything! The program can be run normally, with command line arguments, or imported as a module into another python file. Since it can have command line arguments passed in to operate it, it can be used in other programs, such as a Bash script, or used in a cron job.
+While working on my previous project: [text-excuse-generator](https://github.com/Huckdirks/text-excuse-generator), I just published my first package to [PyPi](https://pypi.org/project/text-excuse-generator/). I quickly realized that I wasn't going to be able to remember the command line arguments to pass into the required fields, and that I was bound to forget to change the version manually in the `setup.py` file every time I updated the package. So I decided to make a program that would automatically update the version number in the `setup.py` file and export my project to PyPi.
 
 ## Uses
 
 There are three main ways to interact with the program: by running it normally, by running it with command line arguments, or by importing it into another python file.
-
-Note: `[recipient]` can be a name or a case sensitive phone number: e.g. `Huck` or `+15555555555`. You must also set up your .env file (more details in [Dependencies](#setting-up-env-file)).
 
 ### Running from Command Line
 
@@ -161,38 +153,19 @@ send_twilio_text("+15555555555", "Beep boop beep bop")
 
 #### Accounts
 
-You'll need to create a [Twilio](https://www.twilio.com/try-twilio) account to get a phone number. You can either use the free trial phone number, or pay $1/month for a real phone number, but you'll need to verify any phone numbers you want to text with the trial account.
+You'll need to create a [PyPi](https://pypi.org/account/register/) account. Once you get your account set up, you'll need to [set up the `.env` file](#setting-up-env-file-1) with this information:
+- Username
+- Password
 
-You'll also need to create an [OpenAI account](https://platform.openai.com/signup) to get an [API key](https://platform.openai.com/account/api-keys). You'll also need to give payment information to OpenAI to use the API, but with the GPT-3.5-Turbo model it's **extremely cheap**: $0.002/1000 tokens: at one word, punctuation, special character, or space per token. As of right now, I've sent ~30 requests to the OpenAI API, and I've only spent $0.02 so far!
+#### Install Dependencies
 
-Once you get these two accounts set up, you'll need to find out this information from Twilio:
-- Account SID
-- Auth Token
-- Twilio Phone Number
-
-And this information from OpenAI:
-- OpenAI API Key
-
-And then [set up the `.env` file](#setting-up-env-file-1) with this information.
-#### Install
-
-##### For Command Line Use
-
-Double click [`dependencies`](../dependencies), or run `bash `[`dependencies`](../dependencies) or `./`[`dependencies`](../dependencies) in the root directory or to install the python dependencies. You must have [pip](https://pip.pypa.io/en/stable/installation/) installed to download the new dependencies. Also, you'll need to install [python](https://www.python.org/downloads/) yourself if you haven't already.
-
-##### For Importing as a Module
-
-If you just run:
-```bash
-pip install text-excuse-generator
-```
-The dependencies will be installed automatically, along with the rest of the module!
+Double click [`dependencies`](../dependencies), or run `bash `[`dependencies`](../dependencies) or `./`[`dependencies`](../dependencies) in the command line in the root directory to install the python dependencies. You must have [pip](https://pip.pypa.io/en/stable/installation/) installed to download the new dependencies. Also, you'll need to install [python](https://www.python.org/downloads/) yourself if you haven't already.
 
 **[List of Dependencies](DEPENDENCIES.md)**
 
 ### Setting Up .env File
 
-Either run the program without any arguments to manually input the information for the .env file, run with [command line arguments](#setting-up-env-file) to automatically input the information for the .env file, or pass in the correct parameters to the [`setup_env()`](#setup_env-takes-in) function in the `text_excuse_generator` module.
+Either run the program without any arguments to manually input the information for the .env file, run with [command line arguments](#setting-up-env-file) to automatically input the information for the .env file, or pass in the correct parameters to the [`setup_env()`](#setup_env-takes-in) function.
 
 ### Running
 
@@ -205,11 +178,11 @@ More detailed instructions are in the [Uses](#uses) section.
 ## Quality Assurance
 All variable, function, class, module, & file names are written in [snake_case](https://en.wikipedia.org/wiki/Snake_case) to make sure everything is consistent, and all `const` variables are written in ALL-CAPS. The code is also quite commented and the variable names are quite verbose, so it should be easy enough to understand what's going on.
 
-If there are any other/better ways to check for quality assurance, please let me know in the [suggestions](https://github.com/Huckdirks/Excuse_Text_Generator/discussions/new?category=suggestions)!
+If there are any other/better ways to check for quality assurance, please let me know in the [suggestions](https://github.com/Huckdirks/auto-pip-exporter/discussions/new?category=suggestions)!
 
 ## Suggestions
 
-If you have any suggestions about anything, please create a [new discussion in suggestions](https://github.com/Huckdirks/Excuse_Text_Generator/discussions/new?category=suggestions).
+If you have any suggestions about anything, please create a [new discussion in suggestions](https://github.com/Huckdirks/auto-pip-exporter/discussions/new?category=suggestions).
 
 ## Contributing
 
