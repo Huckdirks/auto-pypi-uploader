@@ -59,7 +59,7 @@ def pypi_exporter(**kwargs) -> bool:
     # Find the line with "\tversion = " and replace it with the new version
     for i, line in enumerate(lines):
         if "version = " in line:
-            lines[i] = f"\tversion = '{PACKAGE_VERSION}',\n"
+            lines[i] = f"\tversion = \"{PACKAGE_VERSION}\",\n"
             break
     
     # Write the new lines to setup.py
