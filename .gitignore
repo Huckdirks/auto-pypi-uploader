@@ -4,4 +4,7 @@ __pycache__/
 
 # Files
 .DS_Store
-pip_account_info.env
+*.env
+setup.py
+__init__.py
+/pip_exporter.py
