@@ -19,7 +19,7 @@ def set_pypi_login(USERNAME: str, PASSWORD: str) -> None:
 
 
 # Export to PyPi given a version
-def pypi_exporter(**kwargs) -> bool:
+def pypi_upload(**kwargs) -> bool:
     if len(argv) == 4 and (argv[1].lower() == "-u" or argv[1].lower() == "--user"):  # If username & password are passed in, create the environment file
         print("Created environment file")
         return set_pypi_login(argv[2], argv[3])
@@ -71,4 +71,4 @@ def pypi_exporter(**kwargs) -> bool:
     
 
 if __name__ == "__main__":
-    pypi_exporter()
+    pypi_upload()
