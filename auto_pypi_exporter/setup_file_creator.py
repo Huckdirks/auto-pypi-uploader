@@ -5,7 +5,7 @@ from sys import argv
 
 # Constants
 FILE_NAME = "setup.py" 
-FILE_PATH = join(dirname(__file__), FILE_NAME)
+FILE_PATH = getcwd() + "/" + FILE_NAME
 
 
 # Create a setup.py file
@@ -25,7 +25,7 @@ def setup_file_creator(**kwargs) -> bool:
             print("It can also take some optional parameters:")
             print("\t1. -h or --help: This help message")
             print("\t2. -l or --long_description_content_type: The long description type of the package (default: \"text/markdown\")")
-            print("\t3. -u or --url: The URL to the GitHub repository for the package")
+            print("\t3. -u or --url: The URL to the website or GitHub repository for the project")
             print("\t4. -i or --install_requires: The necessary packages to install for the package to work")
             print("\t\tMust be in a comma-separated list WITHOUT SPACES!!!")
 
