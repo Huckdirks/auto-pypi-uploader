@@ -106,7 +106,7 @@ def pypi_upload(**kwargs) -> bool:
     load_dotenv(ENV_PATH)
     USERNAME = getenv("USERNAME")
     PASSWORD = getenv("PASSWORD")
-    #system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
+    system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
 
     # Remove build files once upload is complete/failed
     # BROKEN FOR NOW :(
