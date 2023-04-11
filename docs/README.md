@@ -25,10 +25,10 @@ While working on my previous project: [text-excuse-generator](https://github.com
 
 ## Uses
 
-There are three main ways to interact with the program: by running it normally, by running it with command line arguments, or by importing it into another python file.
+There are three main ways to interact with the program: by [running it in the command line](#running-from-command-line), by [running it with command line arguments](#running-with-command-line-arguments), or by [importing it](#importing-as-a-module) into another python file.
 
 In order for this program to run, your project's directory must be set up as such:
-Any files and directories in [ ]'s are optional, **but highly recommended!!!**
+Any files and directories in **[ ]**'s are optional, **but highly recommended!!!**
 ```bash
 project_root_dir/
     [LICENSE]
@@ -42,7 +42,7 @@ project_root_dir/
 ```
 
 
-You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.:
+You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.
 ```bash
 project_root_dir/
     [LICENSE]
