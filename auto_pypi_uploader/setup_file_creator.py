@@ -30,18 +30,19 @@ def create_setup(**kwargs) -> bool:
             print("\t4. [-d/--description] or description: The description of the package")
             print("\nIt can also take some optional parameters:")
             print("\t1. [-h/--help] or help: This help message")
-            print("\t2. [-l/--long_description_content_type] or long_description_content_type: The long description type of the package (default: \"text/markdown\")")
-            print("\t3. [-u/--url] or url: The URL to the website or GitHub repository for the project")
-            print("\t4. [-i/--install_requires] install_requires: The necessary packages to install for the package to work")
+            print("\t2. [-l/--license] or license: The license of the package")
+            print("\t3. [-ld/--long_description_content_type] or long_description_content_type: The long description type of the package (default: \"text/markdown\")")
+            print("\t4. [-u/--url] or url: The URL to the website or GitHub repository for the project")
+            print("\t5. [-i/--install_requires] install_requires: The necessary packages to install for the package to work")
             print("\t\t- Must be in a comma-separated list for Command Line Arguments, or a list for Function Call")
-            print("\t5. [-k/--keywords] or keywords: The keywords for the package")
+            print("\t6. [-k/--keywords] or keywords: The keywords for the package")
             print("\t\t- Must be in a comma-separated list for Command Line Arguments, or a list for Function Call")
-            print("\t6. [-c/--classifiers] or classifiers: The classifiers for the package")
+            print("\t7. [-c/--classifiers] or classifiers: The classifiers for the package")
             print("\t\t- Must be in a comma-separated list for Command Line Arguments, or a list for Function Call")
-            print("\t7. [-p/--python_requires] or python_requires: The minimum Python version required to run the package")
+            print("\t8. [-p/--python_requires] or python_requires: The minimum Python version required to run the package")
             print("\nHere's how to use all the parameters:")
-            print("\tCommand Line Arguments:\n\tpython3 setup_file_creator.py -n NAME -v \"0.0.0\" -a \"AUTHOR\" -d \"DESCRIPTION\" -l \"LONG DESCRIPTION CONTENT TYPE\" -u \"WEBSITE\" -i \"PUT, PACKAGES, HERE\" -k \"KEYWORDS, HERE\" -c \"PUT, CLASSIFIERS, HERE\" -p \"PYTHON VERSION\"")
-            print("\n\tPassing into Function:\n\tsetup_file_creator(name = \"NAME\", version = \"0.0.0\", author = \"AUTHOR\", description = \"DESCRIPTION\", long_description_content_type = \"LONG DESCRIPTION CONTENT TYPE\", url = \"WEBSITE\", install_requires = [\"PUT\", \"PACKAGES\", \"HERE\"], keywords = [\"KEYWORDS\", \"HERE\"], classifiers = [\"PUT\", \"CLASSIFIERS\", \"HERE\"], python_requires = \"PYTHON VERSION\")")
+            print("\tCommand Line Arguments:\n\tpython3 setup_file_creator.py -n NAME -v \"0.0.0\" -a \"AUTHOR\" -d \"DESCRIPTION\" -l \"LICENSE\" -ld \"LONG DESCRIPTION CONTENT TYPE\" -u \"WEBSITE\" -i \"PUT, PACKAGES, HERE\" -k \"KEYWORDS, HERE\" -c \"PUT, CLASSIFIERS, HERE\" -p \"PYTHON VERSION\"")
+            print("\n\tPassing into Function:\n\tsetup_file_creator(name = \"NAME\", version = \"0.0.0\", author = \"AUTHOR\", description = \"DESCRIPTION\", license = \"LICENSE\", long_description_content_type = \"LONG DESCRIPTION CONTENT TYPE\", url = \"WEBSITE\", install_requires = [\"PUT\", \"PACKAGES\", \"HERE\"], keywords = [\"KEYWORDS\", \"HERE\"], classifiers = [\"PUT\", \"CLASSIFIERS\", \"HERE\"], python_requires = \"PYTHON VERSION\")")
             print("\nIf you do not provide any parameters, the program will ask you for them")
             print("The program will automatically create a setup.py file in the current directory if one is not found")
             print("If a setup.py file is found, it will be overwritten")
@@ -67,6 +68,8 @@ def create_setup(**kwargs) -> bool:
         VERSION = kwargs["version"]
         AUTHOR = kwargs["author"]
         DESCRIPTION = kwargs["description"]
+        if "license" in kwargs:
+            license = kwargs["license"]
         if "long_description_content_type" in kwargs:
             long_description_content_type = kwargs["long_description_content_type"]
         if "url" in kwargs:
@@ -82,32 +85,38 @@ def create_setup(**kwargs) -> bool:
 
     elif len(argv) > 5: # If parameters passed in as command line arguments
         for i, arg in enumerate(argv):
-            if arg == "-n" or arg == "--name":
-                NAME = argv[i + 1]
-            elif arg == "-v" or arg == "--version":
-                VERSION = argv[i + 1]
-            elif arg == "-a" or arg == "--author":
-                AUTHOR = argv[i + 1]
-            elif arg == "-d" or arg == "--description":
-                DESCRIPTION = argv[i + 1]
-            elif arg == "-l" or arg == "--long_description_content_type":
-                long_description_content_type = argv[i + 1]
-            elif arg == "-u" or arg == "--url":
-                url = argv[i + 1]
-            elif arg == "-i" or arg == "--install_requires":
-                install_requires = argv[i + 1].split(",")
-            elif arg == "-k" or arg == "--keywords":
-                keywords = argv[i + 1].split(",")
-            elif arg == "-c" or arg == "--classifiers":
-                classifiers = argv[i + 1].split(",")
-            elif arg == "-p" or arg == "--python_requires":
-                python_requires = argv[i + 1]
+            match arg:
+                case ["-n", "--name"]:
+                    NAME = arg[i + 1]
+                case ["-v", "--version"]:
+                    VERSION = arg[i + 1]
+                case ["-a", "--author"]:
+                    AUTHOR = arg[i + 1]
+                case ["-d", "--description"]:
+                    DESCRIPTION = arg[i + 1]
+                case ["-l", "--license"]:
+                    license = arg[i + 1]
+                case ["-ld", "--long_description_content_type"]:
+                    long_description_content_type = arg[i + 1]
+                case ["-u", "--url"]:
+                    url = arg[i + 1]
+                case ["-i", "--install_requires"]:
+                    install_requires = arg[i + 1].split(",")
+                case ["-k", "--keywords"]:
+                    keywords = arg[i + 1].split(",")
+                case ["-c", "--classifiers"]:
+                    classifiers = arg[i + 1].split(",")
+                case ["-p", "--python_requires"]:
+                    python_requires = arg[i + 1]
 
     else:   # If no parameters passed in (in user input mode)
         NAME = input("Program Name: ")
         VERSION = input("Version: ")
         AUTHOR = input("Author: ")
         DESCRIPTION = input("Description: ")
+        LICENSE_QUESTION = input("\nWould you like to provide a license? (y/n): ")
+        if LICENSE_QUESTION.lower() == "y" or LICENSE_QUESTION.lower() == "yes":
+            license = input("License: ")
         LONG_DESCRIPTION_CONTENT_TYPE_QUESTION = input("\nWould you like to provide a long description content type (default: \"text/markdown\")? (y/n): ")
         if LONG_DESCRIPTION_CONTENT_TYPE_QUESTION.lower() == "y" or LONG_DESCRIPTION_CONTENT_TYPE_QUESTION.lower() == "yes":
             long_description_content_type = input("Long Description Content Type: ")
@@ -145,16 +154,18 @@ def create_setup(**kwargs) -> bool:
         "\twith open(README_PATH) as file:\n",
         "\t\tlong_description = file.read()\n",
         "\nsetup(\n",
-        "\tname = \"" + NAME + "\",\n",
-        "\tversion = \"" + VERSION + "\",\n",
-        "\tauthor = \"" + AUTHOR + "\",\n",
-        "\tdescription = \"" + DESCRIPTION + "\",\n",
+        f"\tname = \"{NAME}\",\n",
+        f"\tversion = \"{VERSION}\",\n",
+        f"\tauthor = \"{AUTHOR}\",\n",
+        f"\tdescription = \"{DESCRIPTION}\",\n",
         "\tlong_description = long_description,\n",
         f"\tlong_description_content_type = \"{long_description_content_type}\",\n"
         "\tpackages = find_packages()",
     ]
+    if license:
+        setup_file.append(f",\n\tlicense = \"{license}\"")
     if url:
-        setup_file.append(",\n\turl = \"" + url + "\"")
+        setup_file.append(f",\n\turl = \"{url}\"")
     if install_requires:
         setup_file.append(",\n\tinstall_requires = " + str(install_requires).lower().replace(" ", ""))
     if keywords:

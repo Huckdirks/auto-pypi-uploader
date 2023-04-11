@@ -83,6 +83,7 @@ When you run the program normally, it will first check if a `setup.py` file exis
 - The Project's Description
 
 And ask you if you want to add these optional fields:
+- The Project's License
 - The Project's Long Description Type (From [README.md](README.md))
 - The Project's URL
 - The Required Packages
@@ -108,11 +109,11 @@ You can also run the program with command line arguments. If you want to send th
 
 If you want to create a `setup.py` file, run:
 ```bash
-python3 setup_file_creator.py --name PROJECT_NAME --version VERSION --author AUTHOR --description DESCRIPTION [--long_description_content_type LONG_DESCRIPTION_TYPE] [--url URL] [--install_requires "INSTALL_REQUIRES"] [--keywords "KEYWORDS"] [--classifiers "CLASSIFIERS"] [--python_requires PYTHON_REQUIRES]
+python3 setup_file_creator.py --name PROJECT_NAME --version VERSION --author AUTHOR --description DESCRIPTION [--license LICENSE] [--long_description_content_type LONG_DESCRIPTION_TYPE] [--url URL] [--install_requires "INSTALL_REQUIRES"] [--keywords "KEYWORDS"] [--classifiers "CLASSIFIERS"] [--python_requires PYTHON_REQUIRES]
 ```
 Any parameters in [ ]'s are optional, and all parameters in " "'s can be a comma separated list: e.g.
 ```bash
-python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmeier" -d "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi." -l text/markdown -u https://github.com/Huckdirks/auto-pypi-uploader -i "twine, python-dotenv" -k "PyPi, Pip, setup, setup.py, automation" -c "Programming Language :: Python, License :: OSI Approved :: MIT License, Operating System :: OS Independent" -p ">=3.8"
+python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmeier" -d "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi." -l MIT -ld text/markdown -u https://github.com/Huckdirks/auto-pypi-uploader -i "twine, python-dotenv" -k "PyPi, Pip, setup, setup.py, automation" -c "Programming Language :: Python, License :: OSI Approved :: MIT License, Operating System :: OS Independent" -p ">=3.8"
 ```
 
 #### **Uploading [PyPi](https://pypi.org/) Package & Adding Login Information**
@@ -149,13 +150,13 @@ Or you can import the individual functions.
 
 #### `create_setup()` takes in:
 ```python
-create_setup(NAME: str, VERSION: str, AUTHOR: str, DESCRIPTION: str, help: bool, long_description_content_type: str, url: str, install_requires: list[str], keywords: list[str], classifiers: list[str], python_requires: str) -> bool
+create_setup(NAME: str, VERSION: str, AUTHOR: str, DESCRIPTION: str, help: bool, license: str, long_description_content_type: str, url: str, install_requires: list[str], keywords: list[str], classifiers: list[str], python_requires: str) -> bool
 ```
 `create_setup()` returns True if able to generate `setup.py` and False if not. **All uppercase parameters are required if parameters are passed in, and each parameter must be defined in the function call. You can also omit all parameters, and the function will prompt you for each one manually.**
 
 If you want to create a `setup.py` file, call the function like this:
 ```python
-create_setup(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
+create_setup(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", license = "MIT", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
 ```
 Make sure to put the fields before the variables when calling the function.
 
