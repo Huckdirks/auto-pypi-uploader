@@ -145,7 +145,7 @@ create_setup(NAME: str, VERSION: str, AUTHOR: str, DESCRIPTION: str, help: bool,
 
 If you want to create a `setup.py` file, call the function like this:
 ```python
-create_setup(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
+create_setup(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
 ```
 Make sure to put the fields before the variables when calling the function.
 

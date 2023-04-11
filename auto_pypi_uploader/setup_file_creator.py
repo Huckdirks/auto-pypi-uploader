@@ -171,6 +171,7 @@ def create_setup(**kwargs) -> bool:
         setup_file.append(",\n\tclassifiers = " + str(classifiers))
     if python_requires:
         setup_file.append(",\n\tpython_requires = \"" + python_requires + "\"")
+    
     setup_file.append("\n)")
 
     # Writing setup.py file
