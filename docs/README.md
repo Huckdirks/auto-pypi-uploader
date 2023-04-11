@@ -7,6 +7,7 @@
     - [Running from Command Line](#running-from-command-line)
     - [Running with Command Line Arguments](#running-with-command-line-arguments)
     - [Importing as a Module](#importing-as-a-module)
+        - [Installing with pip](#installing-with-pip)
         - [`create_setup()`](#create_setup-takes-in)
         - [`set_login()`](#set_login-takes-in)
         - [`pypi_upload()`](#pypi_upload-takes-in)
