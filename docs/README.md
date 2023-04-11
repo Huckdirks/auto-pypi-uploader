@@ -53,7 +53,7 @@ project_root_dir/
     setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
     [README.md] (can also be in docs/)
     [LICENSE]
-    
+
     main_module_name/
             __init__.py
             (other python files...)
@@ -118,13 +118,13 @@ python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmei
 #### **Uploading [PyPi](https://pypi.org/) Package & Adding Login Information**
 If you want to upload a package to [PyPi](https://pypi.org/), run:
 ```bash
-python3 pypi_uploader.py [VERSION] [--user USERNAME PASSWORD]
+python3 pypi_uploader.py VERSION [--user USERNAME PASSWORD]
 ```
 e.g.
 ```bash
 python3 pypi_uploader.py "1.0.0" -u Huckdirks PASSWORD
 ```
-This assumes that you've already made a `setup.py` file. If you just want to update the version number, run `python3 pypi_uploader.py [VERSION]`. This assumes that you've already set up your login credentials. To just add login credentials, run `python3 pypi_uploader.py --user USERNAME PASSWORD`. This will add your username and password to a `.env` file in the current directory. If you decide to update the version & login information in a single call, **make sure the version is the first argument!** **YOU ONLY NEED TO ADD YOUR LOGIN INFORMATION ONCE, OTHERWISE IT WILL OVERRIDE THE PREVIOUS LOGIN INFORMATION!!!**
+This assumes that you've already made a `setup.py` file. If you just want to update the version number, run `python3 pypi_uploader.py VERSION`. This assumes that you've already set up your login credentials. To just add login credentials, run `python3 pypi_uploader.py --user USERNAME PASSWORD`. This will add your username and password to a `.env` file in the current directory. If you decide to update the version & login information in a single call, **make sure the version is the first argument!** **YOU ONLY NEED TO ADD YOUR LOGIN INFORMATION ONCE, OTHERWISE IT WILL OVERRIDE THE PREVIOUS LOGIN INFORMATION!!!**
 
 ### Importing as a Module
 
