@@ -109,6 +109,7 @@ def pypi_upload(**kwargs) -> bool:
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
 
     # Remove build files once upload is complete/failed
+    # BROKEN FOR NOW :(
     if isdir ("dist"):
         rmtree("dist")
     if isdir ("build"):
