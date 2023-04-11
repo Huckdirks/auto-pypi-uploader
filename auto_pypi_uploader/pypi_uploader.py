@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from auto_pypi_uploader.setup_file_creator import create_setup
 
 # Python Libraries
-from os import getenv, system, listdir, remove
+from os import getenv, system, listdir, remove, rmdir
 from shutil import rmtree
 from os.path import dirname, join, isfile, isdir
 from sys import argv
@@ -109,7 +109,6 @@ def pypi_upload(**kwargs) -> bool:
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
 
     # Remove build files once upload is complete/failed
-    # BROKEN FOR NOW :(
     if isdir ("dist"):
         for files in listdir("dist"):
             path = join("dist", files)
@@ -117,6 +116,7 @@ def pypi_upload(**kwargs) -> bool:
                 rmtree(path)
             except OSError:
                 remove(path)
+        rmdir("dist")
     if isdir ("build"):
         for files in listdir("build"):
             path = join("build", files)
@@ -124,6 +124,7 @@ def pypi_upload(**kwargs) -> bool:
                 rmtree(path)
             except OSError:
                 remove(path)
+        rmdir("build")
     if isdir (f"{package_name}.egg-info"):
         for files in listdir(f"{package_name}.egg-info"):
             path = join(f"{package_name}.egg-info", files)
@@ -131,6 +132,7 @@ def pypi_upload(**kwargs) -> bool:
                 rmtree(path)
             except OSError:
                 remove(path)
+        rmdir(f"{package_name}.egg-info")
 
     print("\nWaiting a sec before downloading so PyPi can update the package\n")
     sleep(60)
