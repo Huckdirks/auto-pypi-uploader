@@ -9,11 +9,11 @@ from os.path import dirname, join, isfile
 from sys import argv
 from getpass import getpass
 from time import sleep
+import re
 
 # Constants
 ENV_NAME = "pypi_account_info.env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
 ENV_PATH = join(dirname(__file__), ENV_NAME)
-SETUP_PATH = getcwd() + "/setup.py"
 
 
 # Set up the environment file
@@ -41,8 +41,8 @@ def pypi_upload(**kwargs) -> bool:
     elif len(argv) == 4 and (argv[1].lower() == "-u" or argv[1].lower() == "--user"):  # If username & password are passed in, create the environment file
         print("Created environment file")
         return set_login(argv[2], argv[3])
-    elif not isfile(SETUP_PATH):  # If setup.py is not found, return False
-        print(f"Setup file not found: {SETUP_PATH}")
+    elif not isfile("setup.py"):  # If setup.py is not found, return False
+        print(f"Setup file not found: setup.py")
         if len(argv) <= 1 and not kwargs:  # If in user input mode, run create_setup()
             create_setup()
         else:   # If not in user input mode, return False
@@ -83,11 +83,12 @@ def pypi_upload(**kwargs) -> bool:
     
     # Find the line with "version = " and replace it with the new version
     for i, line in enumerate(lines):
-        if "version = " in line:
+        if "name" in line:
+            # Just get everything in between the ""'s
+            package_name = re.findall('"([^"]*)"', line)
+        elif "version = " in line:
+            # Replace the version with the new version
             lines[i] = f"\tversion = \"{PACKAGE_VERSION}\",\n"
-            break
-        elif "name" in line:
-            package_name = line.split("=")[1].strip().strip("\"").strip("\'")
             break
     
     # Write the new lines to setup.py
@@ -104,6 +105,7 @@ def pypi_upload(**kwargs) -> bool:
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\"")
     print("\nWaiting a sec before downloading so PyPi can update the package\n")
     sleep(15)
+    package_name = ''.join(package_name[0]) # Convert list to string (for some reason this wouldn't work where it's defined)
     system(f"pip install --upgrade {package_name}")
     
 
