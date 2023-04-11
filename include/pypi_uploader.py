@@ -1,6 +1,6 @@
 # Imported Libraries
 from dotenv import load_dotenv
-from setup_file_creator import create_setup
+#from auto_pypi_uploader.setup_file_creator import create_setup # MAKE THIS A REFERENCE TO THE PACKAGES setup_file_creator FILE ONCE UPLOADED SO YOU'LL ONLY NEED THE ONE FILE (NOT BOTH)
 
 # Python Libraries
 from os import getenv, system, getcwd

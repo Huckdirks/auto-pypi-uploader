@@ -7,8 +7,8 @@
     - [Running from Command Line](#running-from-command-line)
     - [Running with Command Line Arguments](#running-with-command-line-arguments)
     - [Importing as a Module](#importing-as-a-module)
-        - [`pypi_exporter()`](#pypi_exporter-takes-in)
-        - [`setup_env()`](#setup_env-takes-in)
+        - [`pypi_upload()`](#pypi_upload-takes-in)
+        - [`set_login()`](#set_login-takes-in)
 - [Running](#running)
     - [Dependencies](#dependencies)
     - [Setting Up .env File](#setting-up-env-file-1)
@@ -28,97 +28,102 @@ There are three main ways to interact with the program: by running it normally, 
 
 ### Running from Command Line
 
-I'd recommend just downloading [excuse_generator.py](../text_excuse_generator/excuse_generator.py) and running it from the command line. You can run it by typing:
+I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [setup_file_creator](../include/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. You can run it by typing:
 ```bash
-python3 text_excuse_generator.py
+python3 pypi_uploader.py
 ```
-If you just want the [excuse_generator.py](../text_excuse_generator/excuse_generator.py) file for a project, please also include the [LICENSE](../LICENSE) file in the same directory as [excuse_generator.py](../text_excuse_generator/excuse_generator.py).
+If you just want the [pypi_uploader.py](../auto_pypi_uploader/pypi_uploader.py) file for a project, please also include the [LICENSE](../LICENSE) file in the same directory as [pypi_uploader.py](../auto_pypi_uploader/pypi_uploader.py).
 
-When you run the program normally, it will ask you for the sender, recipient, problem, and excuse, and if you want to send the text message. It will then generate a text message, and send it to the recipient if chosen. If you input a name into recipient that isn't saved to the system yet when sending a text, it will ask you if you want to save it to the system. If you choose to save it, it will ask you for the phone number, and then save it to the system. You can also just use a phone number for the recipient field, and it will send the text to that number.
+When you run the program normally, it will first check if a `setup.py` file exists in the current directory. If it doesn't, it will then run [`setup_file_creator`](../include/setup_file_creator.py)`.create_setup()`. It will ask you for:
+- The Project's Name
+- The Project's Version
+- The Project's Author
+- The Project's Description
+
+And ask you if you want to add these optional fields:
+- The Project's Long Description Type (From [README.md](README.md))
+- The Project's URL
+- The Required Packages
+- Keywords
+- Classifiers
+- Minimum Python Version
+
+If you just want to create a `setup.py` file, run:
+```bash
+python3 setup_file_creator.py
+```
+If a `setup.py` file already exists, it will then ask you if you want to update the version number. If you say yes, it will then ask you if you want to upload the package to PyPi. If you say yes, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.pypi_upload()`. If you haven't already set up your login credentials, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.set_login()`, and ask you for your username and password. Then it will ask you what version of the package you want to publish. It will then update the version in `setup.py` and run `python3 setup.py sdist bdist_wheel` and `python3 -m twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to PyPi.
 
 ### Running with Command Line Arguments
 
-You can also run the program with command line arguments. If you want to send the text message, you can add `--send` or `-s` as the last argument. All command line arguments longer than a single word need to be in parentheses. I'd recommend just downloading [excuse_generator.py](../text_excuse_generator/excuse_generator.py) and running it from the command line. If you just want the [excuse_generator.py](../text_excuse_generator/excuse_generator.py) file for a project, please also include the [LICENSE](../LICENSE) file in the same directory as [excuse_generator.py](../text_excuse_generator/excuse_generator.py).
+You can also run the program with command line arguments. If you want to send the text message, you can add `--send` or `-s` as the last argument. All command line arguments longer than a single word need to be in parentheses. I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [setup_file_creator](../include/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. Please also include the [LICENSE](../LICENSE) file in the same directory as any files you add from [this project](https://github.com/Huckdirks/auto-pypi-uploader).
 
-#### **Sending a Text Message**
+#### **Creating a `setup.py` File**
 
-If you want to send a text with command line arguments, run:
+If you want to create a `setup.py` file, run:
 ```bash
-python3 text_excuse_generator.py [sender] [recipient] [problem] [excuse] [--send_text_flag]
+python3 setup_file_creator.py --name PROJECT_NAME --version VERSION --author AUTHOR --description DESCRIPTION [--long_description_content_type LONG_DESCRIPTION_TYPE] [--url URL] [--install_requires "INSTALL_REQUIRES"] [--keywords "KEYWORDS"] [--classifiers "CLASSIFIERS"] [--python_requires PYTHON_REQUIRES]
+```
+Any parameters in [ ]'s are optional, and all parameters in " "'s can be a comma separated list: e.g.
+```bash
+python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmeier" -d "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi." -l text/markdown -u https://github.com/Huckdirks/auto-pypi-uploader -i "twine, python-dotenv" -k "PyPi, Pip, setup, setup.py, automation" -c "Programming Language :: Python, License :: MIT License, Operating System :: OS Independent" -p ">=3.8"
+```
+
+#### **Uploading PyPi Package & Adding Login Information**
+If you want to upload a package to PyPi, run:
+```bash
+python3 pypi_uploader.py [VERSION] [--user USERNAME PASSWORD]
 ```
 e.g.
 ```bash
-python3 text_excuse_generator.py Me "Your mom" "I'm late to 😈" "Too many wizards around" -s
+python3 pypi_uploader.py "1.0.0" -u Huckdirks PASSWORD
 ```
-Omit the `[--send_text_flag]` if you don't want to send the text message.
-
-#### **Setting Up .env File**
-If you want to set up the .env file, run:
-```bash
-python3 text_excuse_generator.py [-e/--setup_env] [TWILIO_ACCOUNT_SID] [TWILIO_AUTH_TOKEN] [TWILIO_PHONE_NUMBER] [OPENAI_API_KEY]
-```
-e.g.
-```bash
-python3 text_excuse_generator.py -e "AC1234567890" "1234567890" "+15555555555" "sk-1234567890"
-```
-
-#### **Saving a New Recipient**
-
-If you want to save a new recipient to the system, run:
-```bash
-python3 text_excuse_generator.py [-a/--add] [name] [phone_number]
-```
-e.g.
-```bash
-python3 text_excuse_generator.py -a "Your mom" +15555555555
-```
+This assumes that you've already made a `setup.py` file. If you just want to update the version number, run `python3 pypi_uploader.py [VERSION]`. This assumes that you've already set up your login credentials. To just add login credentials, run `python3 pypi_uploader.py --user USERNAME PASSWORD`. This will add your username and password to a `.env` file in the current directory. If you decide to update the version & login information in a single call, **make sure the version is the first argument!** **YOU ONLY NEED TO ADD YOUR LOGIN INFORMATION ONCE, OTHERWISE IT WILL OVERRIDE THE PREVIOUS LOGIN INFORMATION!!!**
 
 ### Importing as a Module
 
-You can also import the program as a module into another python file. The `text_excuse_generator` module has  four functions: `generate_excuse()`, `setup_env()`, `add_recipient()`, & `send_twilio_text()`.
+You can also import the program as a module into another python file. The `auto_pypi_uploader` module has  two sub-modules:
+- `setup_file_creator` has one function: `create_setup()`
+- `pypi_uploader` has two functions: `pypi_upload()` and `set_login()`
 
 #### Installing with pip
 
 Simply run:
 ```bash
-pip install text-excuse-generator
+pip install auto-pypi-uploader
 ```
-To import the module into your python file, put this at the top of your file:
+To import the modules into your python file, put this at the top of your file:
 ```python
-from text_excuse_generator.excuse_generator import *
+from auto_pypi_uploader.pypi_uploader import *
+from auto_pypi_uploader.setup_file_creator import *
 ```
 Or you can import the individual functions.
 
-#### `generate_excuse()` takes in:
+#### `create_setup()` takes in:
 ```python
-generate_excuse(USER: str, RECIPIENT: str, PROBLEM: str, EXCUSE: str, SEND_TEXT: bool) -> str
+create_setup(NAME: str, VERSION: str, AUTHOR: str, DESCRIPTION: str, help: bool, long_description_content_type: str, url: str, install_requires: list[str], keywords: list[str], classifiers: list[str], python_requires: str) -> bool
 ```
-`generate_excuse()` returns a string of the text message that was generated.
+`create_setup()` returns True if able to generate `setup.py` and False if not. **All uppercase parameters are required and each parameter must be defined in the function call.**
 
-If you want to generate a text message, call the function like this:
-
+If you want to create a `setup.py` file, call the function like this:
 ```python
-generate_excuse("user", "recipient", "problem", "excuse", True)
+generate_excuse(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
+```
+Make sure to put the fields before the variables when calling the function.
+
+#### `set_login()` takes in:
+```python
+set_login(TWILIO_ACCOUNT_SID: str, TWILIO_AUTH_TOKEN: str, TWILIO_PHONE_NUMBER: str, OPENAI_API_KEY: str) -> bool
+```
+If you want to set up your .env file, call `set_login()` like this:
+```python
+set_login("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_PHONE_NUMBER", "OPENAI_API_KEY")
 ```
 e.g.
 ```python
-generate_excuse(user = "me", recipient = "your mom", problem = "I'm late to 😈", excuse = "Too many wizards around", send_text = True)
+set_login("AC1234567890abcdef1234567890abcdef", "1234567890abcdef1234567890abcdef", "+15555555555", "sk-1234567890")
 ```
-Make sure to put the fields before the variables when calling the function. Omit the `[--send_text_flag]` if you don't want to send the text message.
-
-#### `setup_env()` takes in:
-```python
-setup_env(TWILIO_ACCOUNT_SID: str, TWILIO_AUTH_TOKEN: str, TWILIO_PHONE_NUMBER: str, OPENAI_API_KEY: str) -> bool
-```
-If you want to set up your .env file, call `setup_env()` like this:
-```python
-setup_env("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_PHONE_NUMBER", "OPENAI_API_KEY")
-```
-e.g.
-```python
-setup_env("AC1234567890abcdef1234567890abcdef", "1234567890abcdef1234567890abcdef", "+15555555555", "sk-1234567890")
-```
-`setup_env()` returns True if the .env file was successfully set up, and False if it wasn't (Invalid phone number).
+`set_login()` returns True if the .env file was successfully set up, and False if it wasn't (Invalid phone number).
 
 #### `add_recipient()` takes in:
 ```python
@@ -165,7 +170,7 @@ Double click [`dependencies`](../dependencies), or run `bash `[`dependencies`](.
 
 ### Setting Up .env File
 
-Either run the program without any arguments to manually input the information for the .env file, run with [command line arguments](#setting-up-env-file) to automatically input the information for the .env file, or pass in the correct parameters to the [`setup_env()`](#setup_env-takes-in) function.
+Either run the program without any arguments to manually input the information for the .env file, run with [command line arguments](#setting-up-env-file) to automatically input the information for the .env file, or pass in the correct parameters to the [`set_login()`](#set_login-takes-in) function.
 
 ### Running
 
