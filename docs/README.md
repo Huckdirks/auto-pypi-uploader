@@ -32,34 +32,41 @@ In order for this program to run, your project's directory must be set up as suc
 Any files and directories in **[ ]**'s are optional, **but highly recommended!!!**
 ```
 project_root_dir/
-    [LICENSE]
+    pypi_uploader.py (can be downloaded from auto_pypi_uploader/ or substituted with a program that imports the module)
+    setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
     [README.md] (can also be in docs/)
+    [LICENSE]
+
     main_module_name/
             __init__.py
             (other python files...)
+
     [docs/]
-    setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
-    pypi_uploader.py (can be downloaded from include/ or substituted with a program that imports the module)
+            [README.md]
 ```
 
 
 You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.
 ```
 project_root_dir/
-    [LICENSE]
+    pypi_uploader.py (can be downloaded from auto_pypi_uploader/ or substituted with a program that imports the module)
+    setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
     [README.md] (can also be in docs/)
+    [LICENSE]
+    
     main_module_name/
             __init__.py
             (other python files...)
             main_submodule_name/
                     __init__.py
                     (other python files...)
+
     secondary_module_name/
             __init__.py
             (other python files...)
+
     [docs/]
-    setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
-    pypi_uploader.py (can be downloaded from include/ or substituted with a program that imports the module)
+            [README.md]
 ```
 
 ### Running from Command Line
