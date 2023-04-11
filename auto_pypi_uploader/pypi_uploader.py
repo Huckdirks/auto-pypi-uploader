@@ -108,7 +108,7 @@ def pypi_upload(**kwargs) -> bool:
     PASSWORD = getenv("PASSWORD")
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
 
-    # Remove build files once upload is complete/failed
+    # Remove build files once upload is complete/failed since they are no longer needed
     if isdir ("dist"):
         for files in listdir("dist"):
             path = join("dist", files)
