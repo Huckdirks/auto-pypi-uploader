@@ -6,6 +6,7 @@ from setup_file_creator import create_setup
 from os import getenv, system, getcwd
 from os.path import dirname, join, isfile
 from sys import argv
+from getpass import getpass
 
 # Constants
 ENV_NAME = "pypi_account_info.env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
@@ -32,7 +33,7 @@ def pypi_upload(**kwargs) -> bool:
         print("\n\tUsage to create the environment file: python3 pypi_uploader.py  [-u/--user] [USERNAME] [PASSWORD]\n\t\te.g. python3 pypi_uploader.py -u \"username\" \"password\"")
         print("\n\t2. With parameters in a function call:")
         print("\tUsage to upload to PyPi: pypi_upload(version = \"[VERSION]\")\n\t\te.g. pypi_upload(version = \"1.0.0\")")
-        print("\n\tUsage to create the environment file: set_login(user = \"[USERNAME]\", password = \"[PASSWORD]\")\n\t\te.g. set_login(user = \"username\", password = \"password\")")
+        print("\n\tUsage to create the environment file: set_login(username = \"[USERNAME]\", password = \"[PASSWORD]\")\n\t\te.g. set_login(username = \"username\", password = \"password\")")
         print("\nIf you run this program without any parameters, it will prompt the user for the current version (and the username & password if not already saved).")
         return False
     elif len(argv) == 4 and (argv[1].lower() == "-u" or argv[1].lower() == "--user"):  # If username & password are passed in, create the environment file
@@ -48,15 +49,15 @@ def pypi_upload(**kwargs) -> bool:
     elif not isfile(ENV_PATH):    # If the environment file is not found, or username & password aren't passed in, create the .env & return False
         print(f"Environment file not found: {ENV_PATH}")
         if len(argv) == 1 and not kwargs:  # If in user input mode, ask for username & password
-            USERNAME = input("Please provide a PyPi username: ")
-            PASSWORD = input("Please provide a PyPi password: ")
+            USERNAME = input("Please provide your PyPi username: ")
+            PASSWORD = getpass("Please provide your PyPi password: ")
             set_login(USERNAME, PASSWORD)
         elif len(argv) == 5 and (argv[2].lower() == "-u" or argv[2].lower() == "--user"):  # If in command line mode & all parameters are passed in, use username & password passed in
             set_login(argv[3], argv[4])
-        elif kwargs and ("version" in kwargs and "user" in kwargs and "password" in kwargs):  # If in function call mode & all parameters are passed in, use username & password passed in
-            set_login(kwargs["user"], kwargs["password"])
+        elif kwargs and ("version" in kwargs and "username" in kwargs and "password" in kwargs):  # If in function call mode & all parameters are passed in, use username & password passed in
+            set_login(kwargs["username"], kwargs["password"])
         else:                          # If not in user input mode, 
-            print("Either run pypi_uploader.py to manually put your pip account information in .env file before the program can continue:\n\tpython3 pypi_uploader.py -u \"username\" \"password\"\nOr pass your pip account information into the set_login() function to set up the .env file before the program can continue:\n\tset_pypi_login(user = \"username\", password = \"password\")\nRun with [-h/--help] or pass in [help=True] to see help")
+            print("Either run pypi_uploader.py to manually put your pip account information in .env file before the program can continue:\n\tpython3 pypi_uploader.py -u \"username\" \"password\"\nOr pass your pip account information into the set_login() function to set up the .env file before the program can continue:\n\tset_pypi_login(username = \"username\", password = \"password\")\nRun with [-h/--help] or pass in [help=True] to see help")
             return False
 
     if kwargs and "version" in kwargs:  # If a version is passed in as a parameter, use that version

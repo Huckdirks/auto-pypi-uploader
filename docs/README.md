@@ -7,11 +7,12 @@
     - [Running from Command Line](#running-from-command-line)
     - [Running with Command Line Arguments](#running-with-command-line-arguments)
     - [Importing as a Module](#importing-as-a-module)
-        - [`pypi_upload()`](#pypi_upload-takes-in)
+        - [`create_setup()`](#create_setup-takes-in)
         - [`set_login()`](#set_login-takes-in)
+        - [`pypi_upload()`](#pypi_upload-takes-in)
 - [Running](#running)
     - [Dependencies](#dependencies)
-    - [Setting Up .env File](#setting-up-env-file-1)
+    - [Setting Up .env File](#setting-up-env-file)
     - [Running](#running-1)
 - [Quality Assurance](#quality-assurance)
 - [Suggestions](#suggestions)
@@ -20,11 +21,24 @@
 
 ## Introduction
 
-While working on my previous project: [text-excuse-generator](https://github.com/Huckdirks/text-excuse-generator), I just published my first package to [PyPi](https://pypi.org/project/text-excuse-generator/). I quickly realized that I wasn't going to be able to remember the command line arguments to pass into the required fields, and that I was bound to forget to change the version manually in the `setup.py` file every time I updated the package. So I decided to make a program that would automatically update the version number in the `setup.py` file and export my project to PyPi.
+While working on my previous project: [text-excuse-generator](https://github.com/Huckdirks/text-excuse-generator), I just published my first package to [PyPi](https://pypi.org/project/text-excuse-generator/). I quickly realized that I wasn't going to be able to remember the command line arguments to pass into the required fields, and that I was bound to forget to change the version manually in the `setup.py` file every time I updated the package. So I decided to make a program that would automatically update the version number in the `setup.py` file and export my project to [PyPi](https://pypi.org/).
 
 ## Uses
 
 There are three main ways to interact with the program: by running it normally, by running it with command line arguments, or by importing it into another python file.
+
+In order for this program to run, your project's directory must be set up as such:
+```bash
+project_root_dir/
+        [LICENSE]
+        [README.md] (can also be in /docs/)
+        setup.py (can be created with setup_file_creator.py)
+        main_module_name/
+                __init__.py
+                (other python files...)
+        [docs/]
+```
+Any files/directories in [ ]'s are optional, **but highly recommended!!!**
 
 ### Running from Command Line
 
@@ -52,7 +66,7 @@ If you just want to create a `setup.py` file, run:
 ```bash
 python3 setup_file_creator.py
 ```
-If a `setup.py` file already exists, it will then ask you if you want to update the version number. If you say yes, it will then ask you if you want to upload the package to PyPi. If you say yes, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.pypi_upload()`. If you haven't already set up your login credentials, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.set_login()`, and ask you for your username and password. Then it will ask you what version of the package you want to publish. It will then update the version in `setup.py` and run `python3 setup.py sdist bdist_wheel` and `python3 -m twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to PyPi.
+If a `setup.py` file already exists, it will then ask you if you want to update the version number. If you say yes, it will then ask you if you want to upload the package to [PyPi](https://pypi.org/). If you say yes, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.pypi_upload()`. If you haven't already set up your login credentials, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.set_login()`, and ask you for your username and password. Then it will ask you what version of the package you want to publish. It will then update the version in `setup.py` and run `python3 setup.py sdist bdist_wheel` and `python3 twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to [PyPi](https://pypi.org/).
 
 ### Running with Command Line Arguments
 
@@ -69,8 +83,8 @@ Any parameters in [ ]'s are optional, and all parameters in " "'s can be a comma
 python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmeier" -d "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi." -l text/markdown -u https://github.com/Huckdirks/auto-pypi-uploader -i "twine, python-dotenv" -k "PyPi, Pip, setup, setup.py, automation" -c "Programming Language :: Python, License :: MIT License, Operating System :: OS Independent" -p ">=3.8"
 ```
 
-#### **Uploading PyPi Package & Adding Login Information**
-If you want to upload a package to PyPi, run:
+#### **Uploading [PyPi](https://pypi.org/) Package & Adding Login Information**
+If you want to upload a package to [PyPi](https://pypi.org/), run:
 ```bash
 python3 pypi_uploader.py [VERSION] [--user USERNAME PASSWORD]
 ```
@@ -103,53 +117,31 @@ Or you can import the individual functions.
 ```python
 create_setup(NAME: str, VERSION: str, AUTHOR: str, DESCRIPTION: str, help: bool, long_description_content_type: str, url: str, install_requires: list[str], keywords: list[str], classifiers: list[str], python_requires: str) -> bool
 ```
-`create_setup()` returns True if able to generate `setup.py` and False if not. **All uppercase parameters are required and each parameter must be defined in the function call.**
+`create_setup()` returns True if able to generate `setup.py` and False if not. **All uppercase parameters are required if parameters are passed in, and each parameter must be defined in the function call. You can also omit all parameters, and the function will prompt you for each one manually.**
 
 If you want to create a `setup.py` file, call the function like this:
 ```python
-generate_excuse(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
+create_setup(name = "auto_pypi_uploader", version = "1.0.0", author = "Huck Dirksmeier", description = "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi.", long_description_content_type = "text/markdown", url = "https://github.com/Huckdirks/auto-pypi-uploader", install_requires = ["twine", "python-dotenv"], keywords = ["PyPi", "Pip", "setup", "setup.py", "automation"], classifiers = ["Programming Language :: Python", "License :: MIT License", "Operating System :: OS Independent"], python_requires = ">=3.8")
 ```
 Make sure to put the fields before the variables when calling the function.
 
 #### `set_login()` takes in:
 ```python
-set_login(TWILIO_ACCOUNT_SID: str, TWILIO_AUTH_TOKEN: str, TWILIO_PHONE_NUMBER: str, OPENAI_API_KEY: str) -> bool
+set_login(USERNAME: str, PASSWORD: str) -> None
 ```
 If you want to set up your .env file, call `set_login()` like this:
 ```python
-set_login("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_PHONE_NUMBER", "OPENAI_API_KEY")
+set_login("USERNAME", "PASSWORD")
 ```
-e.g.
-```python
-set_login("AC1234567890abcdef1234567890abcdef", "1234567890abcdef1234567890abcdef", "+15555555555", "sk-1234567890")
-```
-`set_login()` returns True if the .env file was successfully set up, and False if it wasn't (Invalid phone number).
 
-#### `add_recipient()` takes in:
+#### `pypi_upload()` takes in:
 ```python
-add_recipient(NAME: str, PHONE_NUMBER: str) -> bool
+pypi_upload(VERSION: str, USERNAME: str, PASSWORD: str) -> bool
 ```
-If you want to save a new recipient to the system, call `add_recipient()` like this:
+`pypi_upload()` returns True if the package was successfully uploaded, and False if it wasn't. **All uppercase parameters are required if parameters are passed in, and each parameter must be defined in the function call. You can also omit all parameters, and the function will prompt you for the version, and the login info if not previously saved.**
+If you want to upload a package & login to [PyPi](https://pypi.org/), call `pypi_upload()` like this:
 ```python
-add_recipient("new_recipient_name", "new_recipient_phone_number")
-```
-e.g.
-```python
-add_recipient("Your Mom", "+15555555555")
-```
-`add_recipient()` returns True if the recipient was successfully added to the system, and False if it wasn't (Invalid phone number or phone number is already in the system).
-
-#### `send_twilio_text()` takes in:
-```python
-send_twilio_text(RECIPIENT_PHONE_NUMBER: str, MESSAGE: str) -> None
-```
-If you want to send a text message, call `send_twilio_text()` like this:
-```python
-send_twilio_text("recipient_phone_number", "message")
-```
-e.g.
-```python
-send_twilio_text("+15555555555", "Beep boop beep bop")
+pypi_upload(version = "0.0.0", username = "USERNAME", password = "PASSWORD")
 ```
 
 ## Running
@@ -158,7 +150,7 @@ send_twilio_text("+15555555555", "Beep boop beep bop")
 
 #### Accounts
 
-You'll need to create a [PyPi](https://pypi.org/account/register/) account. Once you get your account set up, you'll need to [set up the `.env` file](#setting-up-env-file-1) with this information:
+You'll need to create a [PyPi](https://pypi.org/account/register/) account. Once you get your account set up, you'll need to [set up the `.env` file](#setting-up-env-file) with this information:
 - Username
 - Password
 
