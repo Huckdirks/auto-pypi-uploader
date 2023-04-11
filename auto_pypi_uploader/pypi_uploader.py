@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 from auto_pypi_uploader.setup_file_creator import create_setup
 
 # Python Libraries
-from os import getenv, system, getcwd
-from os.path import dirname, join, isfile
+from os import getenv, system
+from shutil import rmtree
+from os.path import dirname, join, isfile, isdir
 from sys import argv
 from getpass import getpass
 from time import sleep
@@ -95,6 +96,17 @@ def pypi_upload(**kwargs) -> bool:
     with open("setup.py", "w") as f:
         f.writelines(lines)
 
+    package_name = ''.join(package_name[0]) # Convert list to string (for some reason this wouldn't work where it's defined)
+    print(f"Uploading {package_name} version {PACKAGE_VERSION} to PyPi")
+
+    # Remove old build files
+    if isdir ("dist"):
+        rmtree("dist")
+    if isdir ("build"):
+        rmtree("build")
+    if isdir (f"{package_name}.egg-info"):
+        rmtree(f"{package_name}.egg-info")
+
     # Run setup.py then begin uploading to PyPi
     system("python3 setup.py sdist bdist_wheel")
 
@@ -104,8 +116,7 @@ def pypi_upload(**kwargs) -> bool:
     PASSWORD = getenv("PASSWORD")
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
     print("\nWaiting a sec before downloading so PyPi can update the package\n")
-    sleep(15)
-    package_name = ''.join(package_name[0]) # Convert list to string (for some reason this wouldn't work where it's defined)
+    sleep(30)
     system(f"pip install --upgrade {package_name}")
     
 
