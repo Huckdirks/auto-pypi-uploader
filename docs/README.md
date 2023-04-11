@@ -71,12 +71,12 @@ project_root_dir/
 
 ### Running from Command Line
 
-I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want the functionality of the whole module. Or just [setup_file_creator](../include/setup_file_creator.py) if you only want to make a `setup.py` file. You can run the program by typing:
+I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want the functionality of the whole module, or just [`setup_file_creator.py`](../auto_pypi_uploader/setup_file_creator.py) if you only want to make a `setup.py` file. You can run the program by typing:
 ```bash
 python3 pypi_uploader.py
 ```
 
-When you run the program normally, it will first check if a `setup.py` file exists in the current directory. If it doesn't, it will then run [`setup_file_creator`](../include/setup_file_creator.py)`.create_setup()`, which will ask you for:
+When you run the program normally, it will first check if a `setup.py` file exists in the current directory. If it doesn't, it will then run [`setup_file_creator`](../auto_pypi_uploader/setup_file_creator.py)`.create_setup()`, which will ask you for:
 - The Project's Name
 - The Project's Version
 - The Project's Author
@@ -96,13 +96,13 @@ python3 setup_file_creator.py
 ```
 
 
-If a `setup.py` file already exists, `pypi_uploader.py` will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package.
+If a `setup.py` file already exists, [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package.
 
 The program runs: `python3 setup.py sdist bdist_wheel` and `python3 twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to [PyPi](https://pypi.org/).
 
 ### Running with Command Line Arguments
 
-You can also run the program with command line arguments. If you want to send the text message, you can add `--send` or `-s` as the last argument. All command line arguments longer than a single word need to be in parentheses. I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [setup_file_creator](../include/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. Please also include the [LICENSE](../LICENSE) file in the same directory as any files you add from [this project](https://github.com/Huckdirks/auto-pypi-uploader).
+You can also run the program with command line arguments. If you want to send the text message, you can add `--send` or `-s` as the last argument. All command line arguments longer than a single word need to be in parentheses. I'd recommend downloading [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [`setup_file_creator.py`](../auto_pypi_uploader/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. Please also include the [LICENSE](../LICENSE) file in the same directory as any files you add from [this project](https://github.com/Huckdirks/auto-pypi-uploader).
 
 #### **Creating a `setup.py` File**
 
