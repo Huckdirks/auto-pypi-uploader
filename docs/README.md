@@ -21,34 +21,54 @@
 
 ## Introduction
 
-While working on my previous project: [text-excuse-generator](https://github.com/Huckdirks/text-excuse-generator), I just published my first package to [PyPi](https://pypi.org/project/text-excuse-generator/). I quickly realized that I wasn't going to be able to remember the command line arguments to pass into the required fields, and that I was bound to forget to change the version manually in the `setup.py` file every time I updated the package. So I decided to make a program that would automatically update the version number in the `setup.py` file and export my project to [PyPi](https://pypi.org/).
+While working on my previous project: [text-excuse-generator](https://github.com/Huckdirks/text-excuse-generator), I just published my first package to [PyPi](https://pypi.org/project/text-excuse-generator/). I quickly realized that I wasn't going to be able to remember the command line arguments to pass into the required fields, and that I was bound to forget to change the version manually in the `setup.py` file every time I updated the package. So I decided to make a program that would automatically update the version number in the `setup.py` file and export my project to [PyPi](https://pypi.org/). I also added another script that would automatically create a `setup.py` file for me with the required fields.
 
 ## Uses
 
 There are three main ways to interact with the program: by running it normally, by running it with command line arguments, or by importing it into another python file.
 
 In order for this program to run, your project's directory must be set up as such:
+Any files and directories in [ ]'s are optional, **but highly recommended!!!**
 ```bash
 project_root_dir/
-        [LICENSE]
-        [README.md] (can also be in /docs/)
-        setup.py (can be created with setup_file_creator.py)
-        main_module_name/
-                __init__.py
-                (other python files...)
-        [docs/]
+    [LICENSE]
+    [README.md] (can also be in docs/)
+    main_module_name/
+            __init__.py
+            (other python files...)
+    [docs/]
+    setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
+    pypi_uploader.py (can be downloaded from include/ or substituted with a program that imports the module)
 ```
-Any files/directories in [ ]'s are optional, **but highly recommended!!!**
+
+
+You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.:
+```bash
+project_root_dir/
+    [LICENSE]
+    [README.md] (can also be in docs/)
+    main_module_name/
+            __init__.py
+            (other python files...)
+            main_submodule_name/
+                    __init__.py
+                    (other python files...)
+    secondary_module_name/
+            __init__.py
+            (other python files...)
+    [docs/]
+    setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
+    pypi_uploader.py (can be downloaded from include/ or substituted with a program that imports the module)
+```
 
 ### Running from Command Line
 
-I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [setup_file_creator](../include/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. You can run it by typing:
+I'd recommend downloading [pypi_uploader.py](../include/pypi_uploader.py) from [include](../include/pypi_uploader.py) into a project's [root directory](../) if you want the functionality of the whole module. Or just [setup_file_creator](../include/setup_file_creator.py) if you only want to make a `setup.py` file. You can run the program by typing:
 ```bash
 python3 pypi_uploader.py
 ```
-If you just want the [pypi_uploader.py](../auto_pypi_uploader/pypi_uploader.py) file for a project, please also include the [LICENSE](../LICENSE) file in the same directory as [pypi_uploader.py](../auto_pypi_uploader/pypi_uploader.py).
 
-When you run the program normally, it will first check if a `setup.py` file exists in the current directory. If it doesn't, it will then run [`setup_file_creator`](../include/setup_file_creator.py)`.create_setup()`. It will ask you for:
+When you run the program normally, it will first check if a `setup.py` file exists in the current directory. If it doesn't, it will then run [`setup_file_creator`](../include/setup_file_creator.py)`.create_setup()`, which will ask you for:
 - The Project's Name
 - The Project's Version
 - The Project's Author
@@ -62,11 +82,15 @@ And ask you if you want to add these optional fields:
 - Classifiers
 - Minimum Python Version
 
-If you just want to create a `setup.py` file, run:
+*If you just want to create a `setup.py` file, run:*
 ```bash
 python3 setup_file_creator.py
 ```
-If a `setup.py` file already exists, it will then ask you if you want to update the version number. If you say yes, it will then ask you if you want to upload the package to [PyPi](https://pypi.org/). If you say yes, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.pypi_upload()`. If you haven't already set up your login credentials, it will then run [`pypi_uploader`](../include/pypi_uploader.py)`.set_login()`, and ask you for your username and password. Then it will ask you what version of the package you want to publish. It will then update the version in `setup.py` and run `python3 setup.py sdist bdist_wheel` and `python3 twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to [PyPi](https://pypi.org/).
+
+
+If a `setup.py` file already exists, `pypi_uploader.py` will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package.
+
+The program runs: `python3 setup.py sdist bdist_wheel` and `python3 twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to [PyPi](https://pypi.org/).
 
 ### Running with Command Line Arguments
 
@@ -133,6 +157,7 @@ If you want to set up your .env file, call `set_login()` like this:
 ```python
 set_login("USERNAME", "PASSWORD")
 ```
+If you want user input, just call [`pypi_upload()`](#pypi_upload-takes-in).
 
 #### `pypi_upload()` takes in:
 ```python
@@ -162,11 +187,12 @@ Double click [`dependencies`](../dependencies), or run `bash `[`dependencies`](.
 
 ### Setting Up .env File
 
-Either run the program without any arguments to manually input the information for the .env file, run with [command line arguments](#setting-up-env-file) to automatically input the information for the .env file, or pass in the correct parameters to the [`set_login()`](#set_login-takes-in) function.
+Either run the program without any arguments to manually input the information for the .env file, run with [command line arguments](#setting-up-env-file) to automatically input the information for the .env file, or pass in the correct parameters to the [`set_login()`](#set_login-takes-in) or [`pypi_upload()`](#pypi_upload-takes-in) function.
 
 ### Running
 
 **YOU HAVE TO INSTALL THE DEPENDENCIES & SETUP THE `.env` FILE BEFORE TRYING TO RUN THE PROGRAM!!!**
+If installed with pip, all dependencies should be installed automatically!
 
 Run `python3 text_excuse_generator.py` or `python3 text_excuse_generator.py [sender] [recipient] [problem] [excuse] [--send_text_flag]` in the command line in the source directory.
 
