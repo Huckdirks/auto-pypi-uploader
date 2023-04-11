@@ -102,7 +102,7 @@ def pypi_upload(**kwargs) -> bool:
     load_dotenv(ENV_PATH)
     USERNAME = getenv("USERNAME")
     PASSWORD = getenv("PASSWORD")
-    system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\"")
+    system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
     print("\nWaiting a sec before downloading so PyPi can update the package\n")
     sleep(15)
     package_name = ''.join(package_name[0]) # Convert list to string (for some reason this wouldn't work where it's defined)
