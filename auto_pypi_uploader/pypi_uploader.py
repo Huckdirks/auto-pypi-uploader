@@ -99,14 +99,6 @@ def pypi_upload(**kwargs) -> bool:
     package_name = ''.join(package_name[0]) # Convert list to string (for some reason this wouldn't work where it's defined)
     print(f"Uploading {package_name} version {PACKAGE_VERSION} to PyPi")
 
-    # Remove old build files
-    if isdir ("dist"):
-        rmtree("dist")
-    if isdir ("build"):
-        rmtree("build")
-    if isdir (f"{package_name}.egg-info"):
-        rmtree(f"{package_name}.egg-info")
-
     # Run setup.py then begin uploading to PyPi
     system("python3 setup.py sdist bdist_wheel")
 
@@ -115,6 +107,15 @@ def pypi_upload(**kwargs) -> bool:
     USERNAME = getenv("USERNAME")
     PASSWORD = getenv("PASSWORD")
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\" --verbose")
+
+    # Remove build files once upload is complete/failed
+    if isdir ("dist"):
+        rmtree("dist")
+    if isdir ("build"):
+        rmtree("build")
+    if isdir (f"{package_name}.egg-info"):
+        rmtree(f"{package_name}.egg-info")
+
     print("\nWaiting a sec before downloading so PyPi can update the package\n")
     sleep(30)
     system(f"pip install --upgrade {package_name}")
