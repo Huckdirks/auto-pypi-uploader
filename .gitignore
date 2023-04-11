@@ -1,6 +1,9 @@
 # Directories
 __pycache__/
 .vscode/
+auto_pypi_uploader.egg-info/
+build/
+dist/
 
 # Files
 .DS_Store
