@@ -194,7 +194,7 @@ Either run the program without any arguments to manually input the information f
 **YOU HAVE TO INSTALL THE DEPENDENCIES & SETUP THE `.env` FILE BEFORE TRYING TO RUN THE PROGRAM!!!**
 If installed with pip, all dependencies should be installed automatically!
 
-Run `python3 pypi_uploader.py` or `python3 pypi_uploader.py VERSION [--user USERNAME PASSWORD]` in the command line in the source directory.
+Run [`python3 pypi_uploader.py`](#running-from-command-line) or [`python3 pypi_uploader.py VERSION [--user USERNAME PASSWORD]`](#running-with-command-line-arguments) in the command line in the source directory.
 
 More detailed instructions are in the [Uses](#uses) section.
 
