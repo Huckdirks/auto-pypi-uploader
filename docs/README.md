@@ -121,9 +121,7 @@ This assumes that you've already made a `setup.py` file. If you just want to upd
 
 ### Importing as a Module
 
-You can also import the program as a module into another python file. The `auto_pypi_uploader` module has  two sub-modules:
-- `setup_file_creator` has one function: [`create_setup()`](#create_setup-takes-in)
-- `pypi_uploader` has two functions: [`pypi_upload()`](#pypi_upload-takes-in) and [`set_login()`](#set_login-takes-in)
+You can also import the program as a module into another python file.
 
 #### Installing with pip
 
@@ -131,6 +129,10 @@ Simply run:
 ```bash
 pip install auto-pypi-uploader
 ```
+ The `auto_pypi_uploader` module has  two sub-modules:
+- `setup_file_creator` has one function: [`create_setup()`](#create_setup-takes-in)
+- `pypi_uploader` has two functions: [`pypi_upload()`](#pypi_upload-takes-in) and [`set_login()`](#set_login-takes-in)
+
 To import the modules into your python file, put this at the top of your file:
 ```python
 from auto_pypi_uploader.pypi_uploader import *
