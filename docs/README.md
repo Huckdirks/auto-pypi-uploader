@@ -161,7 +161,7 @@ If you want user input, just call [`pypi_upload()`](#pypi_upload-takes-in).
 
 #### `pypi_upload()` takes in:
 ```python
-pypi_upload(VERSION: str, USERNAME: str, PASSWORD: str) -> bool
+pypi_upload(VERSION: str, username: str, password: str) -> bool
 ```
 `pypi_upload()` returns True if the package was successfully uploaded, and False if it wasn't. **All uppercase parameters are required if parameters are passed in, and each parameter must be defined in the function call. You can also omit all parameters, and the function will prompt you for the version, and the login info if not previously saved.**
 If you want to upload a package & login to [PyPi](https://pypi.org/), call `pypi_upload()` like this:
