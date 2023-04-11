@@ -97,7 +97,7 @@ python3 setup_file_creator.py
 ```
 
 
-If a `setup.py` file already exists, [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package.
+If a `setup.py` file already exists, [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package. It then automatically updates/ installs the package with `pip3 install --upgrade {project_name}`.
 
 The program runs: `python3 setup.py sdist bdist_wheel` and `python3 twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to [PyPi](https://pypi.org/).
 
