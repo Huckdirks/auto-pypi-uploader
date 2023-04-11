@@ -30,7 +30,7 @@ There are three main ways to interact with the program: by [running it in the co
 
 In order for this program to run, your project's directory must be set up as such:
 Any files and directories in **[ ]**'s are optional, **but highly recommended!!!**
-```bash
+```
 project_root_dir/
     [LICENSE]
     [README.md] (can also be in docs/)
@@ -44,7 +44,7 @@ project_root_dir/
 
 
 You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.
-```bash
+```
 project_root_dir/
     [LICENSE]
     [README.md] (can also be in docs/)
