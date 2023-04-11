@@ -135,7 +135,7 @@ def pypi_upload(**kwargs) -> bool:
         rmdir(f"{package_name}.egg-info")
 
     print("\nWaiting a sec before downloading so PyPi can update the package\n")
-    sleep(60)
+    sleep(90)
     system(f"pip install --upgrade {package_name}")
     
 
