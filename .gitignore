@@ -7,4 +7,5 @@ __pycache__/
 *.env
 setup.py
 __init__.py
-/pip_exporter.py
+/pypi_uploader.py
+/setup_file_creator.py

@@ -8,35 +8,36 @@ FILE_PATH = getcwd() + "/" + FILE_NAME
 
 
 # Create a setup.py file
-def setup_file_creator(**kwargs) -> bool:
+def create_setup(**kwargs) -> bool:
     if kwargs and (not "name" in kwargs or not "version" in kwargs or not "author" in kwargs or not "description" in kwargs):   # If minimum required parameters are not provided, return False
         print("Please provide the minimum required parameters: name, version, author, & description\ne.g. setup_file_creator(name=\"auto-pypi-exporter\", version=\"1.0.0\", author=\"Huck Dirksmeier\", description=\"A program to automate changing a pip package's version & publishing it\")")
         return False
-    elif len(argv) > 1 and len(argv) < 5 or kwargs: # If able to be passed in parameters, possibly display help
+    elif (len(argv) > 1 and len(argv) < 5) or kwargs: # If able to be passed in parameters, possibly display help
         if (argv[1].lower() == "-h" or argv[1].lower() == "--help") or ("help" in kwargs and kwargs["help"] == True):
             # Give info on how to use the program
             system("clear")
+            print("\n'setup.py' Creator Help:")
             print("\nThis program creates a setup.py file in the current working directory for a Python package")
             print("\nYou can run this program in one of two ways:")
-            print("\t1. As command line arguments")
+            print("\t1. From the command line (arguments are optional):")
             print("\tUsage: python3 setup_file_creator.py [-n/--name] NAME [-v/--version] \"0.0.0\" [-a/--author] \"AUTHOR\" [-d/--description] \"DESCRIPTION\"")
-            print("\t2. As parameters in a function call")
+            print("\n\t2. With parameters in a function call:")
             print("\tUsage: setup_file_creator(name = \"NAME\", version = \"0.0.0\", author = \"AUTHOR\", description = \"DESCRIPTION\")")
             print("\nThis program has four required parameters:")
             print("\t1. [-n/--name] or name: The name of the package")
             print("\t2. [-v/--version] or version: The version of the package")
             print("\t3. [-a/--author] or author: The author of the package")
             print("\t4. [-d/--description] or description: The description of the package")
-            print("It can also take some optional parameters:")
+            print("\nIt can also take some optional parameters:")
             print("\t1. [-h/--help] or help: This help message")
             print("\t2. [-l/--long_description_content_type] or long_description_content_type: The long description type of the package (default: \"text/markdown\")")
             print("\t3. [-u/--url] or url: The URL to the website or GitHub repository for the project")
             print("\t4. [-i/--install_requires] install_requires: The necessary packages to install for the package to work")
-            print("\t\tMust be in a comma-separated list for Command Line Arguments, or a list for Function Call")
+            print("\t\t- Must be in a comma-separated list for Command Line Arguments, or a list for Function Call")
             print("\t5. [-k/--keywords] or keywords: The keywords for the package")
-            print("\t\tMust be in a comma-separated list for Command Line Arguments, or a list for Function Call")
+            print("\t\t- Must be in a comma-separated list for Command Line Arguments, or a list for Function Call")
             print("\t6. [-c/--classifiers] or classifiers: The classifiers for the package")
-            print("\t\tMust be in a comma-separated list for Command Line Arguments, or a list for Function Call")
+            print("\t\t- Must be in a comma-separated list for Command Line Arguments, or a list for Function Call")
             print("\t7. [-p/--python_requires] or python_requires: The minimum Python version required to run the package")
             print("\nHere's how to use all the parameters:")
             print("\tCommand Line Arguments:\n\tpython3 setup_file_creator.py -n NAME -v \"0.0.0\" -a \"AUTHOR\" -d \"DESCRIPTION\" -l \"LONG DESCRIPTION CONTENT TYPE\" -u \"WEBSITE\" -i \"PUT, PACKAGES, HERE\" -k \"KEYWORDS, HERE\" -c \"PUT, CLASSIFIERS, HERE\" -p \"PYTHON VERSION\"")
@@ -61,7 +62,7 @@ def setup_file_creator(**kwargs) -> bool:
     classifiers = []
     python_requires = ""
 
-    if kwargs:    # If parameters passed into the function
+    if kwargs:    # If parameters passed in from the function call
         NAME = kwargs["name"]
         VERSION = kwargs["version"]
         AUTHOR = kwargs["author"]
@@ -157,12 +158,16 @@ def setup_file_creator(**kwargs) -> bool:
     if install_requires:
         setup_file.append(",\n\tinstall_requires = " + str(install_requires).lower().replace(" ", ""))
     if keywords:
+        # Remove the first character of each keyword if it is a space
+        for i, KEYWORD in enumerate(keywords):
+            if KEYWORD[0] == " ":
+                keywords[i] = KEYWORD[1:]
         setup_file.append(",\n\tkeywords = " + str(keywords).replace(" ", ""))
     if classifiers:
-        # Make remove the first character of each classifier if it is a space
-        for i, classifier in enumerate(classifiers):
-            if classifier[0] == " ":
-                classifiers[i] = classifier[1:]
+        # Remove the first character of each classifier if it is a space
+        for i, CLASSIFIER in enumerate(classifiers):
+            if CLASSIFIER[0] == " ":
+                classifiers[i] = CLASSIFIER[1:]
         setup_file.append(",\n\tclassifiers = " + str(classifiers))
     if python_requires:
         setup_file.append(",\n\tpython_requires = \"" + python_requires + "\"")
@@ -178,4 +183,4 @@ def setup_file_creator(**kwargs) -> bool:
     
 
 if __name__ == "__main__":
-    setup_file_creator()
+    create_setup()
