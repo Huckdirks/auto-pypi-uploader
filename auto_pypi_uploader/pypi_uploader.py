@@ -8,6 +8,7 @@ from os import getenv, system, getcwd
 from os.path import dirname, join, isfile
 from sys import argv
 from getpass import getpass
+from time import sleep
 
 # Constants
 ENV_NAME = "pypi_account_info.env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
@@ -76,6 +77,7 @@ def pypi_upload(**kwargs) -> bool:
     
     # Change version in setup.py
     lines = []
+    package_name = ""
     with open("setup.py", "r") as f:
         lines = f.readlines()
     
@@ -83,6 +85,9 @@ def pypi_upload(**kwargs) -> bool:
     for i, line in enumerate(lines):
         if "version = " in line:
             lines[i] = f"\tversion = \"{PACKAGE_VERSION}\",\n"
+            break
+        elif "name" in line:
+            package_name = line.split("=")[1].strip().strip("\"").strip("\'")
             break
     
     # Write the new lines to setup.py
@@ -97,6 +102,9 @@ def pypi_upload(**kwargs) -> bool:
     USERNAME = getenv("USERNAME")
     PASSWORD = getenv("PASSWORD")
     system(f"twine upload dist/* -u \"{USERNAME}\" -p \"{PASSWORD}\"")
+    print("\nWaiting a sec before downloading so PyPi can update the package\n")
+    sleep(15)
+    system(f"pip install --upgrade {package_name}")
     
 
 if __name__ == "__main__":
