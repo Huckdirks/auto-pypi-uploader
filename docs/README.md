@@ -104,7 +104,7 @@ python3 setup_file_creator.py --name PROJECT_NAME --version VERSION --author AUT
 ```
 Any parameters in [ ]'s are optional, and all parameters in " "'s can be a comma separated list: e.g.
 ```bash
-python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmeier" -d "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi." -l text/markdown -u https://github.com/Huckdirks/auto-pypi-uploader -i "twine, python-dotenv" -k "PyPi, Pip, setup, setup.py, automation" -c "Programming Language :: Python, License :: MIT License, Operating System :: OS Independent" -p ">=3.8"
+python3 setup_file_creator.py -n auto_pypi_uploader -v "1.0.0" -a "Huck Dirksmeier" -d "A program to automate the creation of the 'setup.py' file, changing a pip package's version, & publishing it to PyPi." -l text/markdown -u https://github.com/Huckdirks/auto-pypi-uploader -i "twine, python-dotenv" -k "PyPi, Pip, setup, setup.py, automation" -c "Programming Language :: Python, License :: OSI Approved :: MIT License, Operating System :: OS Independent" -p ">=3.8"
 ```
 
 #### **Uploading [PyPi](https://pypi.org/) Package & Adding Login Information**

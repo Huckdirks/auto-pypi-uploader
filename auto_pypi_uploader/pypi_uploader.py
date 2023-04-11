@@ -1,6 +1,7 @@
 # Imported Libraries
 from dotenv import load_dotenv
-from setup_file_creator import create_setup
+# from setup_file_creator import create_setup
+from auto_pypi_uploader.setup_file_creator import create_setup
 
 # Python Libraries
 from os import getenv, system, getcwd
@@ -68,7 +69,7 @@ def pypi_upload(**kwargs) -> bool:
     elif len(argv) == 2 and argv[1]:    # If a version is passed in via command line arguments, use that version
         PACKAGE_VERSION = argv[1]
     elif len(argv) <= 1 and not kwargs: # If no version is passed in & in user input mode, ask for a version
-        PACKAGE_VERSION = input("Please provide a package version")
+        PACKAGE_VERSION = input("Please provide a package version: ")
     else:                               # If no version is passed in (somehow), return False
         print("Please provide a package version")
         return False
