@@ -41,7 +41,7 @@ def pypi_upload(**kwargs) -> bool:
         return set_login(argv[2], argv[3])
     elif not isfile(SETUP_PATH):  # If setup.py is not found, return False
         print(f"Setup file not found: {SETUP_PATH}")
-        if len(argv) == 1 and not kwargs:  # If in user input mode, run create_setup()
+        if len(argv) <= 1 and not kwargs:  # If in user input mode, run create_setup()
             create_setup()
         else:   # If not in user input mode, return False
             print("Either run setup_file_creator.py or import create_setup from setup_file_creator and run create_setup() to create the 'setup.py' file\nRun with [-h/--help] or pass in [help=True] to see help")
@@ -54,8 +54,11 @@ def pypi_upload(**kwargs) -> bool:
             set_login(USERNAME, PASSWORD)
         elif len(argv) == 5 and (argv[2].lower() == "-u" or argv[2].lower() == "--user"):  # If in command line mode & all parameters are passed in, use username & password passed in
             set_login(argv[3], argv[4])
-        elif kwargs and ("version" in kwargs and "username" in kwargs and "password" in kwargs):  # If in function call mode & all parameters are passed in, use username & password passed in
+        elif kwargs and ("username" in kwargs and "password" in kwargs):  # If in function call mode & all parameters are passed in, use username & password passed in
             set_login(kwargs["username"], kwargs["password"])
+            if not "version" in kwargs:
+                print("Please provide a package version")
+                return False
         else:                          # If not in user input mode, 
             print("Either run pypi_uploader.py to manually put your pip account information in .env file before the program can continue:\n\tpython3 pypi_uploader.py -u \"username\" \"password\"\nOr pass your pip account information into the set_login() function to set up the .env file before the program can continue:\n\tset_pypi_login(username = \"username\", password = \"password\")\nRun with [-h/--help] or pass in [help=True] to see help")
             return False
@@ -64,7 +67,7 @@ def pypi_upload(**kwargs) -> bool:
         PACKAGE_VERSION = kwargs["version"]
     elif len(argv) == 2 and argv[1]:    # If a version is passed in via command line arguments, use that version
         PACKAGE_VERSION = argv[1]
-    elif len(argv) == 1 and not kwargs: # If no version is passed in & in user input mode, ask for a version
+    elif len(argv) <= 1 and not kwargs: # If no version is passed in & in user input mode, ask for a version
         PACKAGE_VERSION = input("Please provide a package version")
     else:                               # If no version is passed in (somehow), return False
         print("Please provide a package version")

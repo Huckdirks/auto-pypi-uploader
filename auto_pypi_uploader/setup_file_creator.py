@@ -13,7 +13,7 @@ def create_setup(**kwargs) -> bool:
         print("Please provide the minimum required parameters: name, version, author, & description\ne.g. setup_file_creator(name=\"auto-pypi-exporter\", version=\"1.0.0\", author=\"Huck Dirksmeier\", description=\"A program to automate changing a pip package's version & publishing it\")")
         return False
     elif (len(argv) > 1 and len(argv) < 5) or kwargs: # If able to be passed in parameters, possibly display help
-        if (argv[1].lower() == "-h" or argv[1].lower() == "--help") or ("help" in kwargs and kwargs["help"] == True):
+        if (len(argv) > 1 and (argv[1].lower() == "-h" or argv[1].lower() == "--help")) or (kwargs and ("help" in kwargs and kwargs["help"] == True)):
             # Give info on how to use the program
             system("clear")
             print("\n'setup.py' Creator Help:")
@@ -46,11 +46,11 @@ def create_setup(**kwargs) -> bool:
             print("The program will automatically create a setup.py file in the current directory if one is not found")
             print("If a setup.py file is found, it will be overwritten")
             return False
-
-        print("\nPlease provide the minimum required parameters: name, version, author, & description")
-        print("\te.g. setup_file_creator(name=\"auto-pypi-exporter\", version=\"1.0.0\", author=\"Huck Dirksmeier\", description=\"A program to automate changing a pip package's version & publishing it\")\n")
-        print("Run \"python3 setup_file_creator.py -h\" or \"setup_file_creator(help = True)\" for more information")
-        return False
+        elif len(argv) > 1 or (kwargs and (not "name" in kwargs or not "version" in kwargs or not "author" in kwargs or not "description" in kwargs)):   # If parameters are provided, but not the minimum required parameters, return False
+            print("\nPlease provide the minimum required parameters: name, version, author, & description")
+            print("\te.g. setup_file_creator(name=\"auto-pypi-exporter\", version=\"1.0.0\", author=\"Huck Dirksmeier\", description=\"A program to automate changing a pip package's version & publishing it\")\n")
+            print("Run \"python3 setup_file_creator.py -h\" or \"setup_file_creator(help = True)\" for more information")
+            return False
     
     # Setting up variables
 
@@ -67,17 +67,17 @@ def create_setup(**kwargs) -> bool:
         VERSION = kwargs["version"]
         AUTHOR = kwargs["author"]
         DESCRIPTION = kwargs["description"]
-        if long_description_content_type in kwargs:
+        if "long_description_content_type" in kwargs:
             long_description_content_type = kwargs["long_description_content_type"]
-        if url in kwargs:
+        if "url" in kwargs:
             url = kwargs["url"]
-        if install_requires in kwargs:
-            install_requires = kwargs["install_requires"].split(",")
-        if keywords in kwargs:
-            keywords = kwargs["keywords"].split(",")
-        if classifiers in kwargs:
-            classifiers = kwargs["classifiers"].split(",")
-        if python_requires in kwargs:
+        if "install_requires" in kwargs:
+            install_requires = kwargs["install_requires"]
+        if "keywords" in kwargs:
+            keywords = kwargs["keywords"]
+        if "classifiers" in kwargs:
+            classifiers = kwargs["classifiers"]
+        if "python_requires" in kwargs:
             python_requires = kwargs["python_requires"]
 
     elif len(argv) > 5: # If parameters passed in as command line arguments
@@ -108,22 +108,22 @@ def create_setup(**kwargs) -> bool:
         VERSION = input("Version: ")
         AUTHOR = input("Author: ")
         DESCRIPTION = input("Description: ")
-        LONG_DESCRIPTION_CONTENT_TYPE_QUESTION = input("Would you like to provide a long description content type (default: \"text/markdown\")? (y/n): ")
+        LONG_DESCRIPTION_CONTENT_TYPE_QUESTION = input("\nWould you like to provide a long description content type (default: \"text/markdown\")? (y/n): ")
         if LONG_DESCRIPTION_CONTENT_TYPE_QUESTION.lower() == "y" or LONG_DESCRIPTION_CONTENT_TYPE_QUESTION.lower() == "yes":
             long_description_content_type = input("Long Description Content Type: ")
-        URL_QUESTION = input("Would you like to provide a URL? (y/n): ")
+        URL_QUESTION = input("\nWould you like to provide a URL? (y/n): ")
         if URL_QUESTION.lower() == "y" or URL_QUESTION.lower() == "yes":
             url = input("URL: ")
-        INSTALL_REQUIRES_QUESTION = input("Would you like to provide packages to install? (y/n): ")
+        INSTALL_REQUIRES_QUESTION = input("\nWould you like to provide packages to install? (y/n): ")
         if INSTALL_REQUIRES_QUESTION.lower() == "y" or INSTALL_REQUIRES_QUESTION.lower() == "yes":
             install_requires = input("Packages to install (comma-separated): ").split(",")
-        KEYWORDS_QUESTION = input("Would you like to provide keywords? (y/n): ")
+        KEYWORDS_QUESTION = input("\nWould you like to provide keywords? (y/n): ")
         if KEYWORDS_QUESTION.lower() == "y" or KEYWORDS_QUESTION.lower() == "yes":
             keywords = input("Keywords (comma-separated): ").split(",")
-        CLASSIFIERS_QUESTION = input("Would you like to provide classifiers? (y/n): ")
+        CLASSIFIERS_QUESTION = input("\nWould you like to provide classifiers? (y/n): ")
         if CLASSIFIERS_QUESTION.lower() == "y" or CLASSIFIERS_QUESTION.lower() == "yes":
             classifiers = input("Classifiers (comma-separated): ").split(",")
-        PYTHON_REQUIRES_QUESTION = input("Would you like to provide a minimum Python version? (y/n): ")
+        PYTHON_REQUIRES_QUESTION = input("\nWould you like to provide a minimum Python version? (y/n): ")
         if PYTHON_REQUIRES_QUESTION.lower() == "y" or PYTHON_REQUIRES_QUESTION.lower() == "yes":
             python_requires = input("Minimum Python Version: ")
 
