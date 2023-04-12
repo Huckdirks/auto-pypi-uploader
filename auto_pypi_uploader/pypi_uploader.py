@@ -10,7 +10,7 @@ from os.path import dirname, join, isfile, isdir
 from sys import argv
 from getpass import getpass
 from time import sleep
-import re
+from re import findall
 
 # Constants
 ENV_NAME = "pypi_account_info.env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
@@ -86,7 +86,7 @@ def pypi_upload(**kwargs) -> bool:
     for i, line in enumerate(lines):
         if "name" in line:
             # Just get everything in between the ""'s
-            package_name = re.findall('"([^"]*)"', line)
+            package_name = findall('"([^"]*)"', line)
         elif "version = " in line:
             # Replace the version with the new version
             lines[i] = f"\tversion = \"{PACKAGE_VERSION}\",\n"
