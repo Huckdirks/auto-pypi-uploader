@@ -13,8 +13,8 @@ from time import sleep
 from re import findall
 
 # Constants
-ENV_NAME = ".env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
-ENV_PATH = join(dirname(__file__), ENV_NAME)
+ENV_NAME: str = ".env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
+ENV_PATH: str = join(dirname(__file__), ENV_NAME)
 
 
 # Set up the environment file
