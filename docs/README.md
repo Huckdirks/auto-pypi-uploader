@@ -26,12 +26,14 @@ While working on my previous project: [text-excuse-generator](https://github.com
 
 ## Uses
 
-There are three main ways to interact with the program: by [running it in the command line](#running-from-command-line), by [running it with command line arguments](#running-with-command-line-arguments), or by [importing it](#importing-as-a-module) into another python file.
+There are three main ways to interact with the program: by [running it in the command line](#running-from-command-line), by [running it with command line arguments](#running-with-command-line-arguments), or by [importing as a module](#importing-as-a-module) into another python file.
 
 In order for this program to run, your project's directory must be set up as such:
-Any files and directories in **[ ]**'s are optional, **but highly recommended!!!**
+
+**Any files and directories in [ ]'s are optional, but highly recommended!!!**
 ```
 project_root_dir/
+
     pypi_uploader.py (can be downloaded from auto_pypi_uploader/ or substituted with a program that imports the module)
     setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
     [README.md] (can also be in docs/)
@@ -46,9 +48,10 @@ project_root_dir/
 ```
 
 
-You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.
+You can also have multiple modules in the same directory, or even multiple modules within a module, but you will need to add the `__init__.py` file to each directory that contains a module. e.g.:
 ```
 project_root_dir/
+
     pypi_uploader.py (can be downloaded from auto_pypi_uploader/ or substituted with a program that imports the module)
     setup.py (can be created with pypi_uploader.py or setup_file_creator.py)
     [README.md] (can also be in docs/)
@@ -97,7 +100,7 @@ python3 setup_file_creator.py
 ```
 
 
-If a `setup.py` file already exists, [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package. It then automatically updates/ installs the package with `pip3 install --upgrade {project_name}`.
+If a `setup.py` file already exists, [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) will then ask you for a new version number, and update it in `setup.py`. It will then upload the package to [PyPi](https://pypi.org/). If you haven't already set up your login credentials, it will then ask you for your username and password & save it, and then proceed to upload the package. It then automatically updates/installs the package with `pip3 install --upgrade {project_name}`.
 
 The program runs: `python3 setup.py sdist bdist_wheel` and `python3 twine upload dist/* -u "{USERNAME}" -p "{PASSWORD}"` to upload the package to [PyPi](https://pypi.org/).
 
