@@ -13,7 +13,7 @@ from time import sleep
 from re import findall
 
 # Constants
-ENV_NAME = "pypi_account_info.env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
+ENV_NAME = ".env"  # CHANGE THIS TO YOUR ENVIRONMENT NAME (.env file)
 ENV_PATH = join(dirname(__file__), ENV_NAME)
 
 
