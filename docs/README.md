@@ -106,7 +106,7 @@ The program runs: `python3 setup.py sdist bdist_wheel` and `python3 twine upload
 
 ### Running with Command Line Arguments
 
-You can also run the program with command line arguments. If you want to send the text message, you can add `--send` or `-s` as the last argument. All command line arguments longer than a single word need to be in parentheses. I'd recommend downloading [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [`setup_file_creator.py`](../auto_pypi_uploader/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. Please also include the [LICENSE](../LICENSE) file in the same directory as any files you add from [this project](https://github.com/Huckdirks/auto-pypi-uploader).
+You can also run the program with command line arguments. All command line arguments longer than a single word need to be in parentheses. I'd recommend downloading [`pypi_uploader.py`](../auto_pypi_uploader/pypi_uploader.py) into a project's [root directory](../) if you want all the functionality, or just [`setup_file_creator.py`](../auto_pypi_uploader/setup_file_creator.py) if you only want to make a `setup.py` file, and running them from the command line. Please also include the [LICENSE](../LICENSE) file in the same directory as any files you add from [this project](https://github.com/Huckdirks/auto-pypi-uploader).
 
 #### **Creating a `setup.py` File**
 
