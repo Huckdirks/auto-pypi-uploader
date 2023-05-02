@@ -1,4 +1,4 @@
-# Auto Pip Exporter
+# Auto PyPi Uploader
 
 ## Table of Contents
 
