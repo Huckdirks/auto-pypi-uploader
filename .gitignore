@@ -6,5 +6,3 @@ __pycache__/
 .DS_Store
 *.env
 __init__.py
-# Just in case it makes one
-setup.py
