@@ -4,5 +4,5 @@ __pycache__/
 
 # Files
 .DS_Store
-*.env
+*.env*
 __init__.py
